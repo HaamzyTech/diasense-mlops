@@ -1,0 +1,8 @@
+data:
+  source_url: https://raw.githubusercontent.com/npradaschnor/Pima-Indians-Diabetes-Dataset/refs/heads/master/diabetes.csv
+train:
+  random_state: 42
+  test_size: 0.2
+model:
+  name: diasense-diabetes-risk
+  algorithm: random_forest

@@ -1,0 +1,45 @@
+stages:
+  ingest:
+    cmd: python ml/src/ingest.py
+    deps:
+      - ml/src/ingest.py
+      - ml/params.yaml
+    outs:
+      - ml/data/raw/diabetes.csv
+  validate:
+    cmd: python ml/src/validate.py
+    deps:
+      - ml/src/validate.py
+      - ml/data/raw/diabetes.csv
+    outs:
+      - ml/data/validated/validated.csv
+  preprocess:
+    cmd: python ml/src/preprocess.py
+    deps:
+      - ml/src/preprocess.py
+      - ml/data/validated/validated.csv
+    outs:
+      - ml/data/processed/processed.csv
+  train:
+    cmd: python ml/src/train.py
+    deps:
+      - ml/src/train.py
+      - ml/data/processed/processed.csv
+      - ml/params.yaml
+    outs:
+      - ml/artifacts/models/model.pkl
+  evaluate:
+    cmd: python ml/src/evaluate.py
+    deps:
+      - ml/src/evaluate.py
+      - ml/artifacts/models/model.pkl
+    outs:
+      - ml/artifacts/reports/metrics.json
+  register:
+    cmd: python ml/src/register.py
+    deps:
+      - ml/src/register.py
+      - ml/artifacts/reports/metrics.json
+      - ml/artifacts/models/model.pkl
+    outs:
+      - ml/artifacts/reports/register.json
