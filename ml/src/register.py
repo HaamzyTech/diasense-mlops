@@ -6,9 +6,9 @@ import mlflow
 import mlflow.pyfunc
 import pandas as pd
 
-from utils.io import ensure_dirs, read_params, save_json
-from utils.modeling import top_factors
-from utils.runtime import dvc_rev, git_commit_hash, mlflow_tracking_uri
+from ml.src.utils.io import ensure_dirs, read_params, save_json
+from ml.src.utils.modeling import top_factors
+from ml.src.utils.runtime import dvc_rev, git_commit_hash, mlflow_tracking_uri
 
 
 class DiabetesRiskPyFunc(mlflow.pyfunc.PythonModel):

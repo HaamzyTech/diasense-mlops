@@ -1,20 +1,64 @@
 flowchart TB
-  subgraph apps
-    FE[frontend]
-    API[backend-api]
+  subgraph UI[Frontend]
+    PREDICT_PAGE[/predict page]
+    RESULT_PAGE[/result/{requestId}]
+    OPS_PAGE[/ops page]
   end
-  subgraph ml
-    DVC[DVC pipeline]
-    MLF[MLflow]
+
+  subgraph API[backend-api : /api/v1]
+    HEALTH[GET /health, /ready]
+    PREDICT[POST /predict]
+    PREDICTIONS[GET /predictions]
+    FEEDBACK[POST /feedback]
+    MODELINFO[GET /model/info]
+    DRIFT[GET /drift/latest]
+    PIPELINE[GET /pipeline/runs]
+    OPS[GET /ops/summary]
+    METRICS[/metrics]
   end
-  subgraph observability
-    PROM[Prometheus]
-    GRAF[Grafana]
+
+  subgraph SERVING[Model Serving]
+    MODEL_SERVER[model-server\nMLflow models serve]
   end
-  FE --> API
-  API --> MLF
-  API --> POSTGRES[(Postgres)]
-  API --> MODEL[(model-server)]
-  DVC --> MLF
-  PROM --> API
+
+  subgraph DB[PostgreSQL Tables]
+    T1[prediction_requests]
+    T2[prediction_results]
+    T3[feedback_labels]
+    T4[model_versions]
+    T5[pipeline_runs]
+    T6[drift_reports]
+    T7[system_events]
+  end
+
+  subgraph PIPE[Pipeline]
+    DAG1[diasense_training_pipeline]
+    DAG2[diasense_monitoring_pipeline]
+    STAGES[ingest->validate->preprocess->train->evaluate->register]
+    MLFLOW[mlflow-tracking]
+  end
+
+  subgraph OBS[Monitoring]
+    PROM[Prometheus scrape backend /metrics]
+    GRAF[Grafana dashboards]
+  end
+
+  PREDICT_PAGE --> PREDICT
+  RESULT_PAGE --> PREDICTIONS
+  OPS_PAGE --> OPS
+
+  PREDICT --> MODEL_SERVER
+  PREDICT --> T1
+  PREDICT --> T2
+  FEEDBACK --> T3
+  MODELINFO --> T4
+  PIPELINE --> T5
+  DRIFT --> T6
+
+  DAG1 --> STAGES
+  STAGES --> MLFLOW
+  DAG1 --> T5
+  DAG2 --> T5
+
+  PROM --> METRICS
   GRAF --> PROM

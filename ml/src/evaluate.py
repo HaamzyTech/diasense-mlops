@@ -3,9 +3,9 @@ from pathlib import Path
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 
-from utils.constants import FEATURE_COLUMNS
-from utils.io import ensure_dirs, load_model, save_json
-from utils.modeling import compute_metrics, top_factors
+from ml.src.utils.constants import FEATURE_COLUMNS
+from ml.src.utils.io import ensure_dirs, load_model, save_json
+from ml.src.utils.modeling import compute_metrics, top_factors
 
 
 def main() -> None:

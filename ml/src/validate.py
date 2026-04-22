@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from utils.constants import EXPECTED_COLUMNS
-from utils.io import ensure_dirs, save_json, write_csv
+from ml.src.utils.constants import EXPECTED_COLUMNS
+from ml.src.utils.io import ensure_dirs, save_json, write_csv
 
 
 def validate_dataframe(df: pd.DataFrame) -> dict:

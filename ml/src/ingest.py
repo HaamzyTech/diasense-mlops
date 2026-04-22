@@ -2,7 +2,7 @@ from pathlib import Path
 
 import requests
 
-from utils.io import ensure_dirs, read_params
+from ml.src.utils.io import ensure_dirs, read_params
 
 
 def main() -> None:

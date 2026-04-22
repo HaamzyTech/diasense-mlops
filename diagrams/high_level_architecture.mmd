@@ -1,9 +1,33 @@
 flowchart LR
-  frontend --> backend-api
-  backend-api --> model-server
-  backend-api --> postgres
-  backend-api --> mlflow-tracking
-  airflow-webserver --> airflow-scheduler
-  airflow-scheduler --> postgres
-  prometheus --> backend-api
+  user[User / Clinician]
+
+  subgraph apps[Application Layer]
+    frontend[frontend\nNext.js]
+    backend[backend-api\nFastAPI]
+    model[model-server\nMLflow Serve]
+  end
+
+  subgraph data[Data & ML Platform]
+    postgres[(PostgreSQL)]
+    mlflow[mlflow-tracking]
+    dvc[DVC Pipeline]
+    airflow[Airflow DAGs]
+  end
+
+  subgraph obs[Observability]
+    prometheus[Prometheus]
+    grafana[Grafana]
+  end
+
+  user --> frontend
+  frontend --> backend
+  backend --> model
+  backend --> postgres
+  backend --> mlflow
+
+  airflow --> dvc
+  airflow --> postgres
+  dvc --> mlflow
+
+  prometheus --> backend
   grafana --> prometheus

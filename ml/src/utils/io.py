@@ -7,7 +7,7 @@ from typing import Any
 import joblib
 import pandas as pd
 
-from config import ARTIFACTS_DIR, DATA_DIR
+from ml.src.config import ARTIFACTS_DIR, DATA_DIR
 
 
 def ensure_dirs() -> None:

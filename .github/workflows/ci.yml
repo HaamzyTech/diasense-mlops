@@ -5,17 +5,65 @@ on:
   pull_request:
 
 jobs:
-  lint-test:
+  test-and-validate:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Python
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Setup Node
+          python-version: "3.12"
+
+      - name: Setup Node 24.14
         uses: actions/setup-node@v4
         with:
-          node-version: '24.14.0'
-      - name: Validate compose
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: apps/frontend/package.json
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/backend-api/requirements.txt
+
+      - name: Install ML test dependencies
+        run: |
+          pip install pytest pandas numpy scikit-learn mlflow dvc
+
+      - name: Install frontend dependencies
+        working-directory: apps/frontend
+        run: npm install
+
+      - name: Run backend tests
+        run: pytest -q apps/backend-api/tests
+
+      - name: Run ML tests
+        run: pytest -q ml/tests
+
+      - name: Run frontend lint
+        working-directory: apps/frontend
+        run: npm run lint
+
+      - name: Run frontend build
+        working-directory: apps/frontend
+        run: npm run build
+
+      - name: Validate docker compose file
         run: docker compose config
+
+      - name: Validate DVC file structure
+        run: |
+          test -f dvc.yaml
+          python - <<'PY'
+          import yaml
+          from pathlib import Path
+
+          stages = yaml.safe_load(Path('dvc.yaml').read_text()).get('stages', {})
+          expected = ['ingest', 'validate', 'preprocess', 'train', 'evaluate', 'register']
+          missing = [s for s in expected if s not in stages]
+          assert not missing, f"Missing DVC stages: {missing}"
+          print('DVC stages verified:', ', '.join(expected))
+          PY

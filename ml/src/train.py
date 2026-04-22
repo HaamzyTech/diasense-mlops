@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from utils.constants import FEATURE_COLUMNS
-from utils.io import ensure_dirs, read_params, save_json, save_model
-from utils.modeling import candidate_models, compute_metrics, top_factors
+from ml.src.utils.constants import FEATURE_COLUMNS
+from ml.src.utils.io import ensure_dirs, read_params, save_json, save_model
+from ml.src.utils.modeling import candidate_models, compute_metrics, top_factors
 
 
 def main() -> None:

@@ -8,7 +8,7 @@ from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score
 
-from utils.constants import FEATURE_COLUMNS
+from ml.src.utils.constants import FEATURE_COLUMNS
 
 
 def candidate_models(random_state: int) -> dict[str, Any]:

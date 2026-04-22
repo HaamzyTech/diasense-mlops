@@ -4,8 +4,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from utils.constants import FEATURE_COLUMNS
-from utils.io import ensure_dirs, save_json
+from ml.src.utils.constants import FEATURE_COLUMNS
+from ml.src.utils.io import ensure_dirs, save_json
 
 
 def main() -> None:

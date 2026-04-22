@@ -3,8 +3,8 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from utils.constants import FEATURE_COLUMNS, IMPUTE_ZERO_AS_MISSING
-from utils.io import ensure_dirs, save_json, write_csv
+from ml.src.utils.constants import FEATURE_COLUMNS, IMPUTE_ZERO_AS_MISSING
+from ml.src.utils.io import ensure_dirs, save_json, write_csv
 
 
 def preprocess_dataframe(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
