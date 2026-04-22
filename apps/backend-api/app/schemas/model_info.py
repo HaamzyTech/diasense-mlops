@@ -7,4 +7,4 @@ class ModelInfoResponse(BaseModel):
     algorithm: str
     stage: str
     mlflow_run_id: str
-    metrics: dict
+    metrics: dict[str, float]

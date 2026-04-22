@@ -8,3 +8,8 @@ class FeedbackRequest(BaseModel):
     ground_truth_label: bool
     label_source: str
     notes: str | None = None
+
+
+class FeedbackResponse(BaseModel):
+    message: str
+    feedback_id: UUID

@@ -10,3 +10,9 @@ class DriftFeature(BaseModel):
     psi: float | None = None
     ks_stat: float | None = None
     status: str
+
+
+class DriftResponse(BaseModel):
+    report_date: str
+    overall_status: str
+    features: list[DriftFeature]

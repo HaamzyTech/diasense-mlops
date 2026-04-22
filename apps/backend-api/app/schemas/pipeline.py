@@ -10,3 +10,8 @@ class PipelineRunItem(BaseModel):
     started_at: str | None = None
     ended_at: str | None = None
     duration_seconds: int | None = None
+
+
+class PipelineRunsResponse(BaseModel):
+    items: list[PipelineRunItem]
+    count: int
