@@ -6,7 +6,6 @@ stages:
       - ml/params.yaml
     outs:
       - ml/data/raw/diabetes.csv
-
   validate:
     cmd: python ml/src/validate.py
     deps:
