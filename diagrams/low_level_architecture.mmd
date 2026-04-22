@@ -1,0 +1,20 @@
+flowchart TB
+  subgraph apps
+    FE[frontend]
+    API[backend-api]
+  end
+  subgraph ml
+    DVC[DVC pipeline]
+    MLF[MLflow]
+  end
+  subgraph observability
+    PROM[Prometheus]
+    GRAF[Grafana]
+  end
+  FE --> API
+  API --> MLF
+  API --> POSTGRES[(Postgres)]
+  API --> MODEL[(model-server)]
+  DVC --> MLF
+  PROM --> API
+  GRAF --> PROM
