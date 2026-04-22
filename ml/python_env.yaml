@@ -1,0 +1,15 @@
+python: "3.12"
+build_dependencies:
+  - pip==25.0.1
+dependencies:
+  - mlflow==3.11.0
+  - dvc==3.67.0
+  - pandas==2.2.3
+  - scikit-learn==1.6.1
+  - scipy==1.15.2
+  - numpy==2.2.4
+  - pyyaml==6.0.2
+  - requests==2.32.3
+  - psycopg2-binary==2.9.10
+  - joblib==1.4.2
+  - pytest==8.3.5

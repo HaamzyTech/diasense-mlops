@@ -1,0 +1,64 @@
+stages:
+  ingest:
+    cmd: python ml/src/ingest.py
+    deps:
+      - ml/src/ingest.py
+      - ml/params.yaml
+    outs:
+      - ml/data/raw/diabetes.csv
+
+  validate:
+    cmd: python ml/src/validate.py
+    deps:
+      - ml/src/validate.py
+      - ml/data/raw/diabetes.csv
+    outs:
+      - ml/data/validated/validated.csv
+      - ml/artifacts/reports/validation_report.json
+
+  preprocess:
+    cmd: python ml/src/preprocess.py
+    deps:
+      - ml/src/preprocess.py
+      - ml/data/validated/validated.csv
+    outs:
+      - ml/data/processed/processed.csv
+      - ml/data/processed/raw_snapshot.csv
+      - ml/data/features/train.csv
+      - ml/data/features/val.csv
+      - ml/data/features/test.csv
+      - ml/artifacts/reports/preprocessing_artifact.json
+
+  train:
+    cmd: python ml/src/train.py
+    deps:
+      - ml/src/train.py
+      - ml/data/features/train.csv
+      - ml/data/features/val.csv
+      - ml/params.yaml
+    outs:
+      - ml/artifacts/models/best_model.pkl
+      - ml/artifacts/reports/training_summary.json
+
+  evaluate:
+    cmd: python ml/src/evaluate.py
+    deps:
+      - ml/src/evaluate.py
+      - ml/artifacts/models/best_model.pkl
+      - ml/data/features/test.csv
+    outs:
+      - ml/artifacts/reports/evaluation_metrics.json
+      - ml/artifacts/reports/classification_report.json
+      - ml/artifacts/reports/confusion_matrix.json
+      - ml/artifacts/reports/feature_importance.json
+
+  register:
+    cmd: python ml/src/register.py
+    deps:
+      - ml/src/register.py
+      - ml/artifacts/models/best_model.pkl
+      - ml/artifacts/reports/evaluation_metrics.json
+      - ml/artifacts/reports/training_summary.json
+      - ml/params.yaml
+    outs:
+      - ml/artifacts/reports/register.json
